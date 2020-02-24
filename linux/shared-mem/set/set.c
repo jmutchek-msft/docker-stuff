@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 	void *addr;
 	char data[STORAGE_SIZE];
 
+	 printf("Getting ready to SET the memory value.\n");
+
 	pid = getpid();
 	sprintf(data, DATA, pid);
 

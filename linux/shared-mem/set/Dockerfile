@@ -1,5 +1,5 @@
-FROM alpine
+FROM ubuntu
 
-COPY set set/
+COPY set set/set
 
 ENTRYPOINT ["set/set"]
