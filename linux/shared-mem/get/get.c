@@ -8,6 +8,8 @@
 #define STORAGE_ID "/SHM_TEST"
 #define STORAGE_SIZE 32
 
+// from https://gist.github.com/garcia556/8231e844a90457c99cc72e5add8388e4
+
 int main(int argc, char *argv[])
 {
 	int res;
