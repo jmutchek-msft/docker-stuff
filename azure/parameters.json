@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "extensions_enablevmaccess_username": {
+            "value": null
+        },
+        "extensions_enablevmaccess_password": {
+            "value": null
+        },
+        "extensions_enablevmaccess_ssh_key": {
+            "value": null
+        },
+        "extensions_enablevmaccess_reset_ssh": {
+            "value": null
+        },
+        "extensions_enablevmaccess_remove_user": {
+            "value": null
+        },
+        "extensions_enablevmaccess_expiration": {
+            "value": null
+        },
+        "virtualMachines_shmem_linux_name": {
+            "value": null
+        },
+        "storageAccounts_jmsharedmem_name": {
+            "value": null
+        },
+        "storageAccounts_sharedmemdiag_name": {
+            "value": null
+        },
+        "virtualNetworks_shared_mem_vnet_name": {
+            "value": null
+        },
+        "networkInterfaces_shmem_linux922_name": {
+            "value": null
+        },
+        "publicIPAddresses_shmem_linux_ip_name": {
+            "value": null
+        },
+        "networkInterfaces_shmem_windows429_name": {
+            "value": null
+        },
+        "publicIPAddresses_shmem_windows_ip_name": {
+            "value": null
+        },
+        "networkSecurityGroups_shmem_linux_nsg_name": {
+            "value": null
+        },
+        "networkSecurityGroups_shmem_windows_nsg_name": {
+            "value": null
+        },
+        "schedules_shutdown_computevm_shmem_linux_name": {
+            "value": null
+        },
+        "disks_shmem_windows_OsDisk_1_4dbd79591b3442ca9dbf4fc13e6a71b9_name": {
+            "value": null
+        }
+    }
+}
