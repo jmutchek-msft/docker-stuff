@@ -1,0 +1,144 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus"
+        },
+        "cluster-name": {
+            "type": "string",
+            "defaultValue": "managed-aks"
+        },
+        "vnet.RG": {
+            "type": "string",
+            "defaultValue": "maks-network"
+        },
+        "vnet.Name": {
+            "type": "string",
+            "defaultValue": "maks"
+        },
+        "vnet.SubnetName": {
+            "type": "string",
+            "defaultValue": "maks"
+        },
+        "kubernetes.version": {
+            "type": "string",
+            "defaultValue": "1.12.6"
+        },
+        "kubernetes.dnsprefix": {
+            "type": "string",
+            "defaultValue": "maks-cluster-"
+        },
+        "kubernetes.agentCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "minValue": 1,
+            "maxValue": 50
+        },
+        "kubernetes.agentVMSize": {
+            "type": "string",
+            "defaultValue": "Standard_D2_v2"
+        },
+        "kubernetes.maxPods": {
+            "type": "int",
+            "defaultValue": 30
+        },
+        "kubernetes.networkPlugin": {
+            "type": "string",
+            "allowedValues": [
+                "azure",
+                "kubenet"
+            ],
+            "defaultValue": "kubenet"
+        },
+        "kubernetes.serviceCidr": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/16"
+        },
+        "kubernetes.dnsServiceIP": {
+            "type": "string",
+            "defaultValue": "10.0.0.10"
+        },
+        "kubernetes.dockerBridgeCidr": {
+            "type": "string",
+            "defaultValue": "172.17.0.1/16"
+        },
+        "sp.ClientId": {
+            "type": "string"
+        },
+        "sp.ClientSecret": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vnet.SubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet.Name'), parameters('vnet.SubnetName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2020-02-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet.Name'))]"
+            ],
+            "name": "[parameters('cluster-name')]",
+            "properties": {
+                "kubernetesVersion": "[parameters('kubernetes.version')]",
+                "enableRBAC": true,
+                "dnsPrefix": "[parameters('kubernetes.dnsprefix')]",
+                "agentPoolProfiles": [
+                    {
+                        "name": "pool01",
+                        "osDiskSizeGB": 500,
+                        "count": "[parameters('kubernetes.agentCount')]",
+                        "vmSize": "[parameters('kubernetes.agentVMSize')]",
+                        "osType": "Linux",
+                        "vnetSubnetID": "[variables('vnet.SubnetId')]",
+                        "maxPods": "[parameters('kubernetes.maxPods')]"
+                    }
+                ],
+                "servicePrincipalProfile": {
+                    "clientId": "[parameters('sp.ClientId')]",
+                    "secret": "[parameters('sp.ClientSecret')]"
+                },
+                "networkProfile": {
+                    "networkPlugin": "[parameters('kubernetes.networkPlugin')]",
+                    "serviceCidr": "[parameters('kubernetes.serviceCidr')]",
+                    "dnsServiceIP": "[parameters('kubernetes.dnsServiceIP')]",
+                    "dockerBridgeCidr": "[parameters('kubernetes.dockerBridgeCidr')]"
+                }
+            }
+        },
+        {
+            "name": "[parameters('vnet.Name')]",
+            "type": "Microsoft.Network/VirtualNetworks",
+            "apiVersion": "2019-09-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "tags": {},
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.1.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('vnet.SubnetName')]",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/24"
+                        }
+                    }
+                ],
+                "enableDdosProtection": false
+            }
+        }
+    ],
+    "outputs": {
+        "controlPlaneFQDN": {
+            "type": "string",
+            "value": "[reference(concat('Microsoft.ContainerService/managedClusters/', parameters('cluster-name'))).fqdn]"
+        }
+    }
+}
