@@ -8,7 +8,7 @@
         },
         "cluster-name": {
             "type": "string",
-            "defaultValue": "managed-aks"
+            "defaultValue": "maks"
         },
         "vnet.RG": {
             "type": "string",
@@ -24,11 +24,11 @@
         },
         "kubernetes.version": {
             "type": "string",
-            "defaultValue": "1.12.6"
+            "defaultValue": "1.15.7"
         },
         "kubernetes.dnsprefix": {
             "type": "string",
-            "defaultValue": "maks-cluster-"
+            "defaultValue": "jmMaksCluster"
         },
         "kubernetes.agentCount": {
             "type": "int",
@@ -54,15 +54,15 @@
         },
         "kubernetes.serviceCidr": {
             "type": "string",
-            "defaultValue": "10.0.0.0/16"
+            "defaultValue": "10.0.1.0/24"
         },
         "kubernetes.dnsServiceIP": {
             "type": "string",
-            "defaultValue": "10.0.0.10"
+            "defaultValue": "10.0.1.10"
         },
         "kubernetes.dockerBridgeCidr": {
             "type": "string",
-            "defaultValue": "172.17.0.1/16"
+            "defaultValue": "172.17.0.2/24"
         },
         "sp.ClientId": {
             "type": "string"
@@ -72,7 +72,7 @@
         }
     },
     "variables": {
-        "vnet.SubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet.Name'), parameters('vnet.SubnetName'))]"
+        "vnet.SubnetId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('vnet.RG'), '/providers/Microsoft.Network/virtualNetworks/', parameters('vnet.Name'), '/subnets/', parameters('vnet.SubnetName'))]"
     },
     "resources": [
         {
@@ -80,11 +80,11 @@
             "apiVersion": "2020-02-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet.Name'))]"
             ],
             "name": "[parameters('cluster-name')]",
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetes.version')]",
+                "nodeResourceGroup": "[concat(parameters('cluster-name'),'-nodes')]",
                 "enableRBAC": true,
                 "dnsPrefix": "[parameters('kubernetes.dnsprefix')]",
                 "agentPoolProfiles": [
@@ -108,30 +108,6 @@
                     "dnsServiceIP": "[parameters('kubernetes.dnsServiceIP')]",
                     "dockerBridgeCidr": "[parameters('kubernetes.dockerBridgeCidr')]"
                 }
-            }
-        },
-        {
-            "name": "[parameters('vnet.Name')]",
-            "type": "Microsoft.Network/VirtualNetworks",
-            "apiVersion": "2019-09-01",
-            "location": "[parameters('location')]",
-            "dependsOn": [],
-            "tags": {},
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "10.1.0.0/16"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[parameters('vnet.SubnetName')]",
-                        "properties": {
-                            "addressPrefix": "10.1.0.0/24"
-                        }
-                    }
-                ],
-                "enableDdosProtection": false
             }
         }
     ],

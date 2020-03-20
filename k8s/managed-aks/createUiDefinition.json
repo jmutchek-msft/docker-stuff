@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+         "basics": [
+             {}
+         ],
+         "steps": [
+             {
+                 "name": "sp",
+                 "label": "Service Principal",
+                 "subLabel": {
+                     "preValidation": "Provide service principal credentials (az ad sp create-for-rba)",
+                     "postValidation": "Done"
+                 },
+                 "bladeTitle": "Service Principal",
+                 "elements": [
+                     {
+                         "name": "clientId",
+                         "type": "Microsoft.Common.TextBox",
+                         "label": "Client ID (appId)",
+                         "constraints": {
+                             "required": true,
+                             "regex": "",
+                             "validationMessage": "[\\da-zA-z]{8}-([\\da-zA-z]{4}-){3}[\\da-zA-z]{12}"
+                         },
+                         "visible": true
+                     },
+                     {
+                        "name": "clientSecret",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Client Secret (password)",
+                        "constraints": {
+                            "required": true,
+                            "regex": "",
+                            "validationMessage": "[\\da-zA-z]{8}-([\\da-zA-z]{4}-){3}[\\da-zA-z]{12}"
+                        },
+                        "visible": true
+                    }
+                 ]
+             }
+         ],
+         "outputs": {
+             "clientId": "[steps('sp').clientId]",
+             "storageAccountType": "[steps('sp').clientSecret]",
+             "location": "[location()]"
+         }
+     }
+ }
