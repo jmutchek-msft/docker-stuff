@@ -1,0 +1,1 @@
+compress-archive -Path mainTemplate.json,createUiDefinition.json -DestinationPath app.zip

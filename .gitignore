@@ -1,3 +1,4 @@
 bin/
 obj/
 .vs/
+k8s/managed-aks/app.zip
