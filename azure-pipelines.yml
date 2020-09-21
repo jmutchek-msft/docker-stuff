@@ -31,8 +31,8 @@ stages:
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/linux/shared-mem/get/Dockerfile'
+        container: stuff
         tags: |
-          'stuff'
           $(tag)
     - task: Bash@3
       inputs:
