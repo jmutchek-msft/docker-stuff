@@ -32,13 +32,14 @@ stages:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/linux/shared-mem/get/Dockerfile'
         tags: |
-          $(tag)
           stuff
+          $(tag)
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           echo 'Saving container'
+          docker images
           docker save -o $(Build.ArtifactStagingDirectory) stuff
     - task: PublishBuildArtifacts@1
       inputs:
