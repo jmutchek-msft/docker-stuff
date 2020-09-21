@@ -40,7 +40,7 @@ stages:
         script: |
           echo 'Saving container'
           docker images
-          docker save -o $(Build.ArtifactStagingDirectory) stuff
+          docker save -o $(Build.ArtifactStagingDirectory)/stuff.tar stuff
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
