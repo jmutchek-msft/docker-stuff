@@ -24,7 +24,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          echo 'Compiling'
+          echo 'Compiling get'
           gcc linux/shared-mem/get/get.c -lrt -o linux/shared-mem/get/get
     - task: Docker@2
       displayName: Build an image
