@@ -26,7 +26,8 @@ stages:
         script: |
           echo 'Compiling'
           pwd
-          gcc ./linux/shared-mem/get/get.c -o ./linux/shared-mem/get/get
+          ls -l
+          gcc linux/shared-mem/get/get.c -o linux/shared-mem/get/get
     - task: Docker@2
       displayName: Build an image
       inputs:
