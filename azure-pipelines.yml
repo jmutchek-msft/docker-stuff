@@ -35,7 +35,6 @@ stages:
         repository: docker-get
         tags: |
           $(tag)
-          $(build-name)
     - task: Bash@3
       inputs:
         targetType: 'inline'
