@@ -10,7 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  build-name: $(Date:yyyyMMdd)$(Rev:.r)
+  build-name: '$(Date:yyyyMMdd)$(Rev:.r)'
 
 stages:
 - stage: Build
