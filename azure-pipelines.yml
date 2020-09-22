@@ -10,8 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  buildname: '$(Date:yyyyMMdd)$(Rev:.r)'
-
+  
 stages:
 - stage: Build
   displayName: Build image
@@ -41,7 +40,7 @@ stages:
         script: |
           echo 'Saving container'
           docker images
-          docker save -o $(Build.ArtifactStagingDirectory)/docker-get-$(buildname).tar docker-get
+          docker save -o $(Build.ArtifactStagingDirectory)/docker-get-$(Date:yyyyMMdd)$(Rev:.r).tar docker-get
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
