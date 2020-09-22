@@ -31,7 +31,7 @@ stages:
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/linux/shared-mem/get/Dockerfile'
-        repository: stuff
+        repository: docker-get
         tags: |
           $(tag)
     - task: Bash@3
@@ -40,7 +40,7 @@ stages:
         script: |
           echo 'Saving container'
           docker images
-          docker save -o $(Build.ArtifactStagingDirectory)/stuff.tar stuff
+          docker save -o $(Build.ArtifactStagingDirectory)/docker-get-$(tag).tar docker-get
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
